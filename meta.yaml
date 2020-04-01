@@ -1,0 +1,41 @@
+{% set version = "3.6.2" %}
+
+package:
+  name: r-base-importlib
+  version: {{ version|replace("-", "_") }}
+
+source:
+  path: .
+
+build:
+  merge_build_host: True  # [win]
+  skip: true  # [not win]
+  number: 0
+  rpaths:
+    - lib/R/lib/
+    - lib/
+
+requirements:
+  build:
+    - posix
+    - m2w64-tools-git
+    - m2w64-binutils
+  host:
+    - r-base {{ version }}
+  run:
+    - r-base {{ version }}
+
+test:
+  commands:
+    - if not exist %PREFIX%\\lib\R\bin\x64\\R.lib exit 1
+
+about:
+  home: http://www.r-project.org/
+  description: "Importlib for R.dll"
+  license: GPL-3.0
+  license_family: GPL
+  license_file: COPYING
+
+extra:
+  recipe-maintainers:
+    - xhochy
